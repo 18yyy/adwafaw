@@ -1,4 +1,4 @@
-+<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -43,9 +43,6 @@
                 <canvas id="pieChart"></canvas>
             </div>
         </div>
-
-
-        
     </div>
     <script>
         // URL da API
@@ -72,14 +69,16 @@
                 document.getElementById('custoTotal').textContent = `R$ ${custoTotal.toFixed(2)}`;
                 document.getElementById('lucroTotalSemCusto').textContent = `R$ ${lucroSemCusto.toFixed(2)}`;
 
-                // Atualizar gráficos (exemplo apenas para Line Chart)
+                // Atualizar gráficos
                 atualizarLineChart(dados.map(d => d.valor));
+                atualizarScatterChart(dados.map(d => d.valor));
+                atualizarPieChart(dados.map(d => d.valor));
             } catch (error) {
                 console.error('Erro ao carregar os dados:', error);
             }
         }
 
-        // Função para atualizar os gráficos
+        // Função para atualizar o gráfico de linha
         function atualizarLineChart(data) {
             const ctx = document.getElementById('lineChart').getContext('2d');
             new Chart(ctx, {
@@ -92,6 +91,75 @@
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 2,
                         fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                        },
+                        tooltip: {
+                            enabled: true,
+                        }
+                    }
+                }
+            });
+        }
+
+        // Função para atualizar o gráfico de dispersão (scatter)
+        function atualizarScatterChart(data) {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Lucro por Sala',
+                        data: data.map((valor, index) => ({ x: index + 1, y: valor })),
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                        },
+                        tooltip: {
+                            enabled: true,
+                        }
+                    }
+                }
+            });
+        }
+
+        // Função para atualizar o gráfico de pizza (pie)
+        function atualizarPieChart(data) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map((_, i) => `Sala ${i + 1}`),
+                    datasets: [{
+                        label: 'Lucro por Sala',
+                        data: data,
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(54, 162, 235, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
                     }]
                 },
                 options: {
