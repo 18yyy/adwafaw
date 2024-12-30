@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-let dados = JSON.parse(fs.readFileSync('dados.json', 'utf-8') || '[]'); // Carrega os dados do arquivo (ou um array vazio)
+let dados = JSON.parse(fs.readFileSync('salas.json', 'utf-8') || '[]'); // Carrega os dados do arquivo (ou um array vazio)
 
 export default function handler(req, res) {
     if (req.method === 'POST') {
