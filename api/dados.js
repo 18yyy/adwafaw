@@ -1,13 +1,20 @@
 import fs from 'fs';
+import path from 'path';
 
-// Carregar ou criar o arquivo se não existir
+const filePath = path.join(process.cwd(), 'api', 'salas.json');  // Caminho correto para o arquivo dentro de 'api'
+
+// Tenta carregar o arquivo ou inicializar com um array vazio
 let dados = [];
 try {
-    const fileContent = fs.readFileSync('salas.json', 'utf-8');
-    dados = JSON.parse(fileContent);
+    if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, 'utf-8');
+        dados = JSON.parse(fileContent);
+    } else {
+        // Cria um arquivo vazio caso não exista
+        fs.writeFileSync(filePath, JSON.stringify([]));
+    }
 } catch (error) {
-    console.error("Erro ao ler ou parsear o arquivo:", error);
-    // Garantir que o dados seja um array vazio em caso de erro
+    console.error("Erro ao ler o arquivo:", error);
     dados = [];
 }
 
@@ -20,15 +27,14 @@ export default function handler(req, res) {
 
         dados.push({ descricao, valor });
 
-        // Salvar os dados no arquivo
+        // Tenta salvar os dados no arquivo
         try {
-            fs.writeFileSync('salas.json', JSON.stringify(dados, null, 2));
+            fs.writeFileSync(filePath, JSON.stringify(dados, null, 2));
+            return res.status(201).json({ message: "Dado adicionado com sucesso!" });
         } catch (error) {
             console.error("Erro ao salvar dados no arquivo:", error);
             return res.status(500).json({ error: "Erro ao salvar os dados no arquivo." });
         }
-
-        return res.status(201).json({ message: "Dado adicionado com sucesso!" });
     } else if (req.method === 'GET') {
         return res.status(200).json(dados);
     } else {
