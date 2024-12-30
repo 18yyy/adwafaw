@@ -1,7 +1,15 @@
 import fs from 'fs';
 
-// Carrega os dados do arquivo (se existir) ou cria um array vazio
-let dados = JSON.parse(fs.readFileSync('salas.json', 'utf-8') || '[]'); 
+// Carregar ou criar o arquivo se não existir
+let dados = [];
+try {
+    const fileContent = fs.readFileSync('salas.json', 'utf-8');
+    dados = JSON.parse(fileContent);
+} catch (error) {
+    console.error("Erro ao ler ou parsear o arquivo:", error);
+    // Garantir que o dados seja um array vazio em caso de erro
+    dados = [];
+}
 
 export default function handler(req, res) {
     if (req.method === 'POST') {
@@ -12,8 +20,13 @@ export default function handler(req, res) {
 
         dados.push({ descricao, valor });
 
-        // Salva os dados no arquivo após cada POST
-        fs.writeFileSync('salas.json', JSON.stringify(dados, null, 2));
+        // Salvar os dados no arquivo
+        try {
+            fs.writeFileSync('salas.json', JSON.stringify(dados, null, 2));
+        } catch (error) {
+            console.error("Erro ao salvar dados no arquivo:", error);
+            return res.status(500).json({ error: "Erro ao salvar os dados no arquivo." });
+        }
 
         return res.status(201).json({ message: "Dado adicionado com sucesso!" });
     } else if (req.method === 'GET') {
