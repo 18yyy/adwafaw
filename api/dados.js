@@ -1,4 +1,4 @@
-import { db } from './firebase'; // Certifique-se de que está importando corretamente o Firebase
+import { db } from './firebase'; // Certifique-se de que a importação está correta
 
 export default async function handler(req, res) {
     const dadosCollection = db.collection('dados'); // Referência à coleção 'dados'
