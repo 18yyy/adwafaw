@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 
-const redis = new Redis(process.env.REDIS_URL); // URL do Redis configurada como variável de ambiente
+const redis = new Redis("rediss://default:AVnoAAIjcDE1MDY1ODlkOGE5NzM0NzdiOTE5ZGQyOTMwNmU4MTYxYXAxMA@full-bunny-23016.upstash.io:6379"); // URL do Redis configurada como variável de ambiente
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
