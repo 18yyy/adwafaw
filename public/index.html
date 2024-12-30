@@ -61,11 +61,12 @@
                 const totalSalas = dados.length;
                 const custoTotal = totalSalas * custoPorSala;
                 const lucroTotal = dados.reduce((total, item) => total + item.valor, 0);
-                const lucroSemCusto = lucroTotal;
+                const lucroTotalComCusto = lucroTotal - custoTotal;  // Lucro com custo
+                const lucroSemCusto = lucroTotal;  // Sem considerar o custo
 
                 // Atualizando os valores na página
                 document.getElementById('totalVendas').textContent = totalSalas;
-                document.getElementById('lucroTotal').textContent = `R$ ${lucroTotal.toFixed(2)}`;
+                document.getElementById('lucroTotal').textContent = `R$ ${lucroTotalComCusto.toFixed(2)}`;
                 document.getElementById('custoTotal').textContent = `R$ ${custoTotal.toFixed(2)}`;
                 document.getElementById('lucroTotalSemCusto').textContent = `R$ ${lucroSemCusto.toFixed(2)}`;
 
