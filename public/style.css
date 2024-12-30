@@ -92,6 +92,8 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow-x: auto; /* Adiciona rolagem horizontal */
+    white-space: nowrap; /* Impede quebra de linha no título */
 }
 
 .chart-box canvas {
@@ -99,6 +101,18 @@ h1 {
     max-height: 100%;
     width: auto !important;
     height: auto !important;
+}
+
+.chart-box .chart-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 5px;
+    display: block;
+    white-space: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    font-weight: 600;
 }
 
 @keyframes fadeIn {
