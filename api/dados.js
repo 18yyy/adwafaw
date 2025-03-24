@@ -1,25 +1,35 @@
 import Redis from "ioredis";
 
-const redis = new Redis(process.env.REDIS_URL); // URL do Redis configurada como variável de ambiente
+const redis = new Redis(process.env.REDIS_URL); // URL do Redis definida na variável de ambiente
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const { descricao, valor } = req.body;
-        if (!descricao || !valor) {
-            return res.status(400).json({ error: "Descrição e valor são obrigatórios." });
+        // Espera receber: quantidade, custo e valor
+        const { quantidade, custo, valor } = req.body;
+        if (quantidade == null || custo == null || valor == null) {
+            return res.status(400).json({ error: "Quantidade, custo e valor são obrigatórios." });
         }
 
-        // Adiciona dado com expiração de 12 horas
-        const id = `dado:${Date.now()}`; // Gera uma chave única
-        await redis.setex(id, 43200, JSON.stringify({ descricao, valor })); // 43200 segundos = 12 horas
+        // Cria uma chave única para a venda com data/hora
+        const id = `venda:${Date.now()}`;
+        const venda = {
+            quantidade: Number(quantidade),
+            custo: Number(custo), // Custo total da transação
+            valor: Number(valor), // Valor total recebido
+            timestamp: Date.now()
+        };
 
-        return res.status(201).json({ message: "Dado adicionado com sucesso!", id });
+        // Armazena a venda com expiração de 12 horas (43200 segundos)
+        await redis.setex(id, 43200, JSON.stringify(venda));
+
+        return res.status(201).json({ message: "Venda registrada com sucesso!", id });
     } else if (req.method === 'GET') {
-        const keys = await redis.keys("dado:*");
-        const values = await Promise.all(keys.map(key => redis.get(key)));
-        const dados = values.map(value => JSON.parse(value));
+        // Busca todas as vendas
+        const keys = await redis.keys("venda:*");
+        const vendasRaw = await Promise.all(keys.map(key => redis.get(key)));
+        const vendas = vendasRaw.map(value => JSON.parse(value));
 
-        return res.status(200).json(dados);
+        return res.status(200).json(vendas);
     } else {
         return res.status(405).json({ error: "Método não permitido." });
     }
