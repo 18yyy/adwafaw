@@ -1,6 +1,6 @@
 import Redis from "ioredis";
 
-const redis = new Redis(process.env.REDIS_URL); // URL do Redis definida na variável de ambiente
+const redis = new Redis("redis://default:uppWWa9noVGK8TiGl96o5PAjztJ4pHWW@redis-10876.c256.us-east-1-2.ec2.redns.redis-cloud.com:10876"); // URL do Redis definida na variável de ambiente
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
