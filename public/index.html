@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel de Imóveis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="brand">Imob<span>Panel</span></div>
+        <div class="login-area" id="login-area">
+          <input id="password-input" type="text" placeholder="Senha de Acesso (ex: John)" />
+          <button id="login-button">Entrar</button>
+        </div>
+        <div class="session-area hidden" id="session-area">
+          <div class="db-badge" id="db-badge"></div>
+          <button id="logout-button" class="ghost">Sair</button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="actions" id="actions" class="hidden">
+          <button id="add-button" class="primary">Adicionar Imóvel</button>
+        </section>
+
+        <section id="list-section" class="card-grid"></section>
+        <div id="empty-state" class="empty hidden">
+          <div class="empty-icon">🏠</div>
+          <div class="empty-title">Nenhum imóvel cadastrado</div>
+          <div class="empty-subtitle">Clique em "Adicionar Imóvel" para começar</div>
+        </div>
+      </main>
+
+      <footer class="app-footer">© <span id="year"></span> ImobPanel</footer>
+    </div>
+
+    <!-- Modal Adicionar -->
+    <div class="modal hidden" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Novo Imóvel</h3>
+          <button id="close-modal" class="icon">✕</button>
+        </div>
+        <form id="form-imovel" class="form" enctype="multipart/form-data">
+          <div class="grid">
+            <label>
+              <span>Endereço</span>
+              <input name="endereco" required placeholder="Rua, número, bairro, cidade" />
+            </label>
+            <label>
+              <span>Quartos</span>
+              <input type="number" name="quartos" min="0" value="2" />
+            </label>
+            <label>
+              <span>Vagas na Garagem</span>
+              <input type="number" name="vagasGaragem" min="0" value="1" />
+            </label>
+            <label>
+              <span>Metragem (m²)</span>
+              <input type="number" name="metragem" min="0" step="1" value="60" />
+            </label>
+            <label>
+              <span>Valor (R$)</span>
+              <input type="number" name="valor" min="0" step="0.01" value="250000" />
+            </label>
+            <label class="full">
+              <span>Observações</span>
+              <textarea name="observacoes" rows="3" placeholder="Características, pontos fortes, regras, etc."></textarea>
+            </label>
+            <label class="full">
+              <span>Fotos</span>
+              <input type="file" name="fotos" accept="image/*" multiple />
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="ghost" id="cancelar">Cancelar</button>
+            <button type="submit" class="primary">Salvar Imóvel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/script.js"></script>
+  </body>
+  </html>
+
